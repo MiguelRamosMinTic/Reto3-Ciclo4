@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import solucionreto1.Reto1.model.Clone;
 import solucionreto1.Reto1.model.Order;
 import solucionreto1.Reto1.service.OrderService;
 
@@ -41,29 +40,29 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Clone> getClone(@PathVariable("id") Integer id) {
-        return service.getCloneById(id);
+    public Optional<Order> getOrder(@PathVariable("id") Integer id) {
+        return service.getOrderById(id);
     }
     /**
      * 
-     * @param c
+     * @param o
      * @return 
      */
     @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
-    public Clone save(@RequestBody Clone c){
-        return service.save(c);
+    public Order save(@RequestBody Order o){
+        return service.save(o);
     }
 
     /**
      * 
-     * @param c
+     * @param o
      * @return 
      */
     @PutMapping("/update")
     @ResponseStatus(HttpStatus.CREATED)
-    public Clone update(@RequestBody Clone c){
-        return service.update(c);
+    public Order update(@RequestBody Order o){
+        return service.update(o);
     }
     
     /**
@@ -75,5 +74,20 @@ public class OrderController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public boolean delete(@PathVariable("id") Integer id){
         return service.deleteById(id);
+    }
+    
+    @GetMapping("/zona/{zone}")
+    public List<Order> getOrdersByZone(@PathVariable("zone") String zone){
+        return service.getOrdersByZone(zone);
+    }
+    
+    @GetMapping("/status/{status}")
+    public List<Order> getOrdersByStatus(@PathVariable("status") String status){
+        return service.getOrdersByStatus(status);
+    }
+    
+    @GetMapping("/quantity/{quantity}")
+    public List<Order> getOrdersByQuantity(@PathVariable("quantity") String quantity){
+        return service.getOrdersByQuantities(quantity);
     }
 }

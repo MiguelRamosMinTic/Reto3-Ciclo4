@@ -29,17 +29,14 @@ public class OrderService {
     }
     
     public Order save(Order o) {
-        if(c.getBrand() == null || c.getProcesor() == null ||
-        c.getOs() == null || c.getDescription() == null ||
-        c.getMemory() == null || c.getHardDrive() == null || 
-        c.getPhotography() == null){
-            return c;
+        if(o.getId()==null){
+            return repository.save(o);
         }else{
-            Optional<Clone> cloneExists = repository.getCloneById(c.getId());
-            if(cloneExists.isEmpty()){
-                return repository.save(o);
-            }else{
+            Optional<Order> existOrder = repository.getOrderById(o.getId());
+            if(existOrder.isPresent()){
                 return o;
+            }else{
+                return repository.save(o);
             }
         }
     }
@@ -53,32 +50,20 @@ public class OrderService {
         if (o.getId() != null) {
             Optional<Order> orderExist = repository.getOrderById(o.getId());
             if (orderExist.isPresent()) {
-                if (c.getBrand()!= null) {
-                    cloneExist.get().setBrand(c.getBrand());
+                if (o.getRegisterDay()!= null) {
+                    orderExist.get().setRegisterDay(o.getRegisterDay());
                 }
-                if (c.getProcesor()!= null) {
-                    cloneExist.get().setProcesor(c.getProcesor());
+                if (o.getStatus()!= null) {
+                    orderExist.get().setStatus(o.getStatus());
                 }
-                if (c.getOs()!= null) {
-                    cloneExist.get().setOs(c.getOs());
+                if (o.getSalesMan()!= null) {
+                    orderExist.get().setSalesMan(o.getSalesMan());
                 }
-                if (c.getDescription()!= null) {
-                    cloneExist.get().setDescription(c.getDescription());
+                if (o.getProducts()!= null) {
+                    orderExist.get().setProducts(o.getProducts());
                 }
-                if (c.getMemory()!= null) {
-                    cloneExist.get().setMemory(c.getMemory());
-                }
-                if (c.getHardDrive()!= null) {
-                    cloneExist.get().setHardDrive(c.getHardDrive());
-                }
-                if (c.getPrice()!= 0.0) {
-                    cloneExist.get().setPrice(c.getPrice());
-                }
-                if (c.getQuantity()!= 0) {
-                    cloneExist.get().setQuantity(c.getQuantity());
-                }
-                if (c.getPhotography()!= null) {
-                    cloneExist.get().setPhotography(c.getPhotography());
+                if (o.getQuantities()!= null) {
+                    orderExist.get().setQuantities(o.getQuantities());
                 }
                 return repository.save(orderExist.get());
             } else {
@@ -95,6 +80,18 @@ public class OrderService {
             return true;
         }).orElse(false);
         return false;
+    }
+    
+    public List<Order> getOrdersByZone(String zone){
+        return repository.getOrderByZone(zone);
+    }
+    
+    public List<Order> getOrdersByStatus(String status){
+        return repository.getOrderByZone(status);
+    }
+    
+    public List<Order> getOrdersByQuantities(String quantities){
+        return repository.getOrderByZone(quantities);
     }
     
 }

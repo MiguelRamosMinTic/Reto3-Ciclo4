@@ -38,4 +38,22 @@ public class OrderRepository {
     public void deleteById (Integer id){
         repository.deleteById(id);
     }
+    
+    /**
+     * 
+     * @param zona
+     * @return
+     */
+    public List<Order> getOrderByZone(String zona){
+        return repository.findByZone(zona);
+    }
+    
+    public List<Order> getOrderByStatus(String status){
+        return repository.findByStatus(status);
+    }
+    
+    public List<Order> getOrderByQuantities(String quantities){
+        return repository.findByStatus(quantities);
+    }
+
 }

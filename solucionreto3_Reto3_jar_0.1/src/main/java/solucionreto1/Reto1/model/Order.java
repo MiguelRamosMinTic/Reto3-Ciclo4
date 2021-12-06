@@ -1,6 +1,7 @@
 package solucionreto1.Reto1.model;
 
 import java.util.Date;
+import java.util.Map;
 import javax.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,7 +28,7 @@ public class Order {
     private String status;
     private User salesMan;
 
-    private Map<String, CleaningProduct> products;
-    private Map<String, Integer> quantities;
+    private Map<Integer, Clone> products;
+    private Map<Integer, Integer> quantities;
 
 }
