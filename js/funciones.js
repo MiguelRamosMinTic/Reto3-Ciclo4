@@ -49,7 +49,12 @@ let checkUser = function(rta) {
 
     } else {
         alert("¡Bienvenido! "+rta.name);
-        window.location.href = "usuarios.html";
+        localStorage.setItem("idUser", rta.id);
+        if(rta.type == "ADM"){
+            location.href = "../paginas/usuarios.html";
+        }else{
+            location.href = "../paginas/order.html";
+        }
     }
 }
 
@@ -66,7 +71,6 @@ $("#login").click(function () {
 
 function validarUsuario(response) {
     if (response.id != null) {
-        location.href = "usuarios.html";
         alert("¡Bienvenido! " + response.name);
     } else {
         alert("Usuario no registrado :/");
@@ -177,6 +181,8 @@ function getJSONnew (){
         id: $("#identificacionRegistro").val(),
         identification: $("#identificacionRegistro").val(),
         name: $("#nombreRegistro").val(),
+        birthtDay: $("#birthtRegistro").val(),
+        monthBirthtDay: $("#monthRegistro").val(),
         address: $("#addressRegistro").val(),
         cellPhone: $("#cellphoneRegistro").val(),
         email: $("#emailRegistro").val(),
@@ -204,7 +210,6 @@ function jqueryPOST(url, funcion, json) {
         contentType: "application/json",
         
         success: function (response) {
-            //console.log(response);
             funcion();
         }
     });
@@ -212,7 +217,6 @@ function jqueryPOST(url, funcion, json) {
 
 let usuarioAgregado = function() {
     alert("Se ha registrado el nuevo usuario");
-    //mostrarTabla();
     $('#ventanaRegistrar').modal('hide');
     jqueryGET(URL_GET_USERS(), mostrarTabla);
 
@@ -278,6 +282,8 @@ let mostrarTabla = function(response) {
         rows += '<th scope="row">' + response[i].id + '</th>';
         rows += '<td>' + response[i].identification + '</td>';
         rows += '<td>' + response[i].name + '</td>';
+        rows += '<td>' + response[i].birthtDay + '</td>';
+        rows += '<td>' + response[i].monthBirthtDay + '</td>';
         rows += '<td>' + response[i].address + '</td>';
         rows += '<td>' + response[i].cellPhone + '</td>';
         rows += '<td>' + response[i].email + '</td>';
@@ -296,6 +302,8 @@ $("#editarUsuario").click(function() {
         id: $("#identificacionRegistro").val(),
         identification: $("#identificacionRegistro").val(),
         name: $("#nombreRegistro").val(),
+        birthtDay: $("#birthtRegistro").val(),
+        monthBirthtDay: $("#monthRegistro").val(),
         address: $("#addressRegistro").val(),
         cellPhone: $("#cellphoneRegistro").val(),
         email: $("#emailRegistro").val(),
@@ -329,8 +337,12 @@ function buscarPorIDUsuario(idItem) {
         success: function (response) {
             console.log(response)
             $("#ventanaRegistrar").modal("show");
+            $("#editarUsuario").show();
+            $("#guardarUsuario").hide();
             $("#identificacionRegistro").val(response.id);
             $("#nombreRegistro").val(response.name);
+            $("#birthtRegistro").val(response.birthtDay);
+            $("#monthRegistro").val(response.monthBirthtDay);
             $("#addressRegistro").val(response.address);
             $("#cellphoneRegistro").val(response.cellPhone);
             $("#emailRegistro").val(response.email);
@@ -385,161 +397,12 @@ function eliminarUsuario(idElemento) {
     });
   }
 
-
-
-// INVENTARIO ==============================================================================================
-
-$("#guardarInventario").click(function () {
-    if ($.trim($("#brandRegistro").val()) == "" || $.trim($("#procesorRegistro").val()) == "" || $.trim($("#osRegistro").val()) == "" || $.trim($("#descriptionRegistro").val()) == "" || $.trim($("#memoryRegistro").val()) == "" || $.trim($("#hardDriveRegistro").val()) == "" || $.trim($("#availabilityRegistro").val()) == "" || $.trim($("#priceRegistro").val()) == "" || $.trim($("#quantityRegistro").val()) == "" || $.trim($("#photographyRegistro").val()) == "") {
-        alert("Por favor ingrese todos los campos");
-    } else {
-        let datos = {
-            id: $("#idInventario").val(),
-            brand: $("#brandRegistro").val(),
-            procesor: $("#procesorRegistro").val(),
-            os: $("#osRegistro").val(),
-            description: $("#descriptionRegistro").val(),
-            memory: $("#memoryRegistro").val(),
-            hardDrive: $("#hardDriveRegistro").val(),
-            availability: $("#availabilityRegistro").val(),
-            price: $("#priceRegistro").val(),
-            quantity: $("#quantityRegistro").val(),
-            photography: $("#photographyRegistro").val()
-        }
-        $.ajax({
-            url: "http://localhost:8080/api/peripheral/new",
-            method: "POST",
-            dataType: "JSON",
-            data: JSON.stringify(datos),
-            contentType: "application/json",
-            Headers: {
-                "Content-Type": "application/json"
-            },
-            statusCode: {
-                201: function (response) {
-                    console.log(response);
-                    alert("Registrado Correctamente");
-                    $("#miTablaInventario").empty();
-                    consultarInventario();
-                    $('#ventanaRegistrarInventario').modal('hide');
-                }
-            }
-        });
-    }
-});
-
-function consultarInventario() {
-    $.ajax({
-        url: "http://localhost:8080/api/peripheral/all",
-        type: "GET",
-        datatype: "JSON",
-        success: function (response) {
-            $("#miTablaInventario").empty();
-            mostrarTablaInventario(response);
-            console.log(response);
-        }
-    });
-}
-
-function mostrarTablaInventario(response) {
-    let rows = '<tr>';
-    for (i = 0; i < response.length; i++) {
-        rows += '<th scope="row">' + response[i].id + '</th>';
-        rows += '<td>' + response[i].brand + '</td>';
-        rows += '<td>' + response[i].procesor + '</td>';
-        rows += '<td>' + response[i].os + '</td>';
-        rows += '<td>' + response[i].description + '</td>';
-        rows += '<td>' + response[i].memory + '</td>';
-        rows += '<td>' + response[i].hardDrive + '</td>';
-        rows += '<td>' + response[i].availability + '</td>';
-        rows += '<td>' + response[i].price + '</td>';
-        rows += '<td>' + response[i].quantity + '</td>';
-        rows += '<td>' + response[i].photography + '</td>';
-        rows += '<td> <button class="btn btn-primary fa fa-pencil" onclick="buscarPorIDInventario(' + response[i].id + ')"></button><button style="margin-left:10px"class="btn btn-danger fa fa-trash" onclick="eliminarInventario(' + response[i].id + ')"></button></td>';
-        rows += '</tr>';
-    }
-
-    $("#miTablaInventario").append(rows);
-}
-
-$("#editarInventario").click(function() {
-    let datos = {
-        id: $("#idInventario").val(),
-        brand: $("#brandRegistro").val(),
-        procesor: $("#procesorRegistro").val(),
-        os: $("#osRegistro").val(),
-        description: $("#descriptionRegistro").val(),
-        memory: $("#memoryRegistro").val(),
-        hardDrive: $("#hardDriveRegistro").val(),
-        availability: $("#availabilityRegistro").val(),
-        price: $("#priceRegistro").val(),
-        quantity: $("#quantityRegistro").val(),
-        photography: $("#photographyRegistro").val()
-    }
-
-    var dataToSend = JSON.stringify(datos);
-    $.ajax({
-        dataType: 'json',
-        data: dataToSend,
-        contentType: 'application/json',
-        url: "http://localhost:8080/api/peripheral/update",
-        type: 'PUT',
-        success: function (response) {
-            console.log(response);
-            alert("Actualizado Correctamente :D");
-            $("#ventanaRegistrarInventario").modal("hide");
-            $("#miTablaInventario").empty();
-            consultarInventario();
-        },
-    });
-});
-
-function buscarPorIDInventario(idItem) {
-    $.ajax({
-        url: "http://localhost:8080/api/peripheral/" + idItem,
-        type: "GET",
-        datatype: "JSON",
-        success: function (response) {
-            console.log(response)
-            $("#ventanaRegistrarInventario").modal("show");
-            $("#idInventario").val(response.id);
-            $("#brandRegistro").val(response.brand);
-            $("#procesorRegistro").val(response.procesor);
-            $("#osRegistro").val(response.os);
-            $("#descriptionRegistro").val(response.description);
-            $("#memoryRegistro").val(response.memory);
-            $("#hardDriveRegistro").val(response.hardDrive);
-            $("#availabilityRegistro").val(response.availability);
-            $("#priceRegistro").val(response.price);
-            $("#quantityRegistro").val(response.quantity);
-            $("#photographyRegistro").val(response.photography);
-        }
-    });
-}
-
-function eliminarInventario(idElemento) {
-    let elemento = {
-      id: idElemento,
-    }
-    let datoEnvio = JSON.stringify(elemento);
-    console.log(datoEnvio);
-    $.ajax({
-      url: "http://localhost:8080/api/peripheral/" + idElemento,
-      type: "DELETE",
-      data: datoEnvio,
-      datatype: "json",
-      contentType: 'application/json',
-      success: function (respuesta) {
-        alert("Eliminado correctamente :)");
-        $("#miTablaInventario").empty();
-        consultarInventario();
-      }
-    });
-  }
-
-
 window.onload = jqueryGET(URL_GET_USERS() , mostrarTabla);
-window.onload = consultarInventario();
+
+function botonModalUsuario(){
+    $("#guardarUsuario").show();
+    $("#editarUsuario").hide();
+}
 
 // $("document").ready(function(){
 //     var idUser = localStorage.getItem('idUser');

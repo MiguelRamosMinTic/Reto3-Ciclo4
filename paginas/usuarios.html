@@ -28,37 +28,27 @@
             <a class="nav-link" href="#">¿Quienes Somos?</a>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"aria-expanded="false">Catalogo
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"aria-expanded="false">Administrar
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li>
-                <hr class="dropdown-divider" />
-              </li>
-              <li>
-                <a class="dropdown-item" href="#">Something else here</a>
-              </li>
+              <li><a class="dropdown-item" href="../paginas/usuarios.html">Usuarios</a></li>
+              <li><a class="dropdown-item" href="../paginas/inventario.html">Inventario</a></li>
+              <li><a class="dropdown-item" href="../paginas/order.html">Ordenes</a></li>
             </ul>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="../paginas/inventario.html">Inventario</a>
-          </li>
         </ul>
-        <form class="d-flex">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-          <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
+          <button class="btn btn-outline-danger" id="cerrarSesion">Cerrar Sesion</button>
       </div>
     </div>
   </nav>
+  
   <div class="container">
     <center>    
       <img src="../img/avataradmin.png" alt="Avatar" style="width: 210px; height: 190px; margin-top: 30px"
         class="rounded mx-auto d-block" />
         <h1>Registrar Usuarios</h1>
       <button type="submit" class="btn fa fa-plus"  style="margin-top: 30px ; width: 150px; height: 50px; background: rgba(157, 160, 177, 0.418);" data-bs-toggle="modal"
-        data-bs-target="#ventanaRegistrar" id="registrarUsuario" > Registrar</button>        
+        data-bs-target="#ventanaRegistrar" id="registrarUsuario" onclick="botonModalUsuario()"> Registrar</button>        
     </center>
   </div>
   <div class="modal fade" id="ventanaRegistrar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -73,19 +63,28 @@
               
                 <div class="row">
                   <div class="col">
-                    <input type="number" class="form-control" id ="identificacionRegistro" placeholder="identificación">
+                    <input type="number" class="form-control" id="identificacionRegistro" placeholder="identificación">
                   </div>
                   <div class="col">
                     <input type="text" class="form-control" id="nombreRegistro" placeholder="nombre" required>
                   </div>
                 </div>
-                    <br>
+                <br>
                 <div class="row">
-                    <div class="col">
-                      <input type="text" class="form-control" id ="addressRegistro" placeholder="address">
-                    </div>
-                    <div class="col">
-                      <input type="number" class="form-control" id="cellphoneRegistro" placeholder="cellphone" >
+                  <div class="col">
+                    <input type="number" class="form-control" id="birthtRegistro" placeholder="dia cumpleaños">
+                  </div>
+                  <div class="col">
+                    <input type="text" class="form-control" id="monthRegistro" placeholder="mes cumpleaños" required>
+                  </div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="col">
+                    <input type="text" class="form-control" id="addressRegistro" placeholder="address">
+                  </div>
+                  <div class="col">
+                    <input type="number" class="form-control" id="cellphoneRegistro" placeholder="cellphone" >
                     </div>
                   </div>
                     <br>
@@ -118,11 +117,13 @@
   </div>
   <div style="margin-left: 100px; margin-right: 100px; text-align:center; margin-top: 20px;" > 
        <table class="table">
-    <thead class="thead-dark">
+    <thead class="thead-dark table-dark">
       <tr>
         <th scope="col">ID</th>
         <th scope="col">Identificación</th>
         <th scope="col">Name</th>
+        <th scope="col">BirthtDay</th>
+        <th scope="col">MonthBirthtDay</th>
         <th scope="col">Address</th>
         <th scope="col">Cellphone</th>
         <th scope="col">Email</th>
