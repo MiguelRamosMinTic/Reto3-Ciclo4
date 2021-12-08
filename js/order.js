@@ -79,3 +79,7 @@ $("#cerrarSesion").click(function(){
 
 
 window.onload = consultarUsuarioPerfil();
+
+
+// Botón solicitar pedido -------------------------------------------------------
+
