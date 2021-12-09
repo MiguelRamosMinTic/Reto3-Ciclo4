@@ -39,17 +39,11 @@ function mostrarTablaPerfil(response) {
     $("#miTablaPerfil").append(rows);
 }
 
-$("#cerrarSesion").click(function(){
-    localStorage.clear();
-    location.href = "../paginas/index.html";
-});
-
-
 // ORDENES DE PEDIDO ==============================================================================================
 
-function consultarOrdenes(){
+function consultarProductos(){
     $.ajax({
-        url: "http://localhost:8080/api/order/all",
+        url: "http://localhost:8080/api/clone/all",
         type: "GET",
         datatype: "JSON",
         success: function (response) {
@@ -63,13 +57,67 @@ function consultarOrdenes(){
 function mostrarTablaOrder(response) {
     let rows = '<tr>';
     for(i = 0; i < response.length; i++){
-        rows += '<th scope="row">' + response[i].identification + '</th>';
-        rows += '<td>' + response[i].name + '</td>';
-        rows += '<td>' + response[i].email + '</td>';
-        rows += '<td>' + response[i].zone + '</td>';
+        rows += '<td>' + "<img src='"+response[i].photography+"' width='50%' height='50px'>";
+        rows += '<th>' + response[i].os + '</th>';
+        rows += '<td>' + response[i].procesor + '</td>';
+        rows += '<th>' + response[i].memory + '</th>';
+        rows += '<th>' + response[i].hardDrive + '</th>';
+        rows += '<td>' + response[i].description + '</td>';
+        rows += '<td>' + response[i].price + '</td>';
+        rows += '<td>' + "<input type='number' class='form-control text-center' min='1' value='"+response[i].quantity+"'></input>";
         rows += '</tr>';
     }
     $("#miTablaOrder").append(rows);
+}
+
+function consultarOrder(){
+    $.ajax({
+        url: "http://localhost:8080/api/order/all",
+        type: "GET",
+        datatype: "JSON",
+        success: function (response) {
+            mensajePedido(response);
+            console.log(response);
+        }
+    });
+}
+
+function mensajePedido(response){
+    $("#enviarOrder").empty();
+    let mensaje = $("<p>");
+    for(i=0; i<response.length; i++){
+        if(response.length != 1){
+            var idAutoincrementable = response.length+1;
+            mensaje.text("El codigo de tu pedido es "+idAutoincrementable);
+            $("#enviarOrder").append(mensaje);
+        }else{
+            idAutoincrementable = 1;
+            mensaje.text("El codigo de tu pedido es "+idAutoincrementable);
+            $("#enviarOrder").append(mensaje);
+        }
+    }
+}
+
+function guardarOrder(idAutoincrementable, fechaActual){
+    var id = localStorage.getItem("idUser");
+    let datos = {
+        id: idAutoincrementable,
+        registerDay: new Date(),
+        status: "Pendiente"
+    }
+    var dataToSend = JSON.stringify(datos);
+    $.ajax({
+        datatype: 'json',
+        data: dataToSend,
+        contentType: 'application/json',
+        url: "http://localhost:8080/api/order/new",
+        type: 'POST',
+        success: function(response){
+            console.log(response);
+            alert("Order Guardada Correctamente!");
+            $("#ventanaRegistrarOrder").modal("hide");
+        }
+    });
 }
 
 $("#cerrarSesion").click(function(){
@@ -79,6 +127,8 @@ $("#cerrarSesion").click(function(){
 
 
 window.onload = consultarUsuarioPerfil();
+window.onload = consultarProductos();
+
 
 
 // Botón solicitar pedido -------------------------------------------------------
