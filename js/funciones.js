@@ -52,6 +52,8 @@ let checkUser = function(rta) {
         localStorage.setItem("idUser", rta.id);
         if(rta.type == "ADM"){
             location.href = "../paginas/usuarios.html";
+        }else if(rta.type == "COORD"){
+            location.href = "../paginas/order2.html";
         }else{
             location.href = "../paginas/order.html";
         }
@@ -290,7 +292,7 @@ let mostrarTabla = function(response) {
         rows += '<td>' + response[i].password + '</td>';
         rows += '<td>' + response[i].zone + '</td>';
         rows += '<td>' + response[i].type + '</td>';
-        rows += "<td> <button class='btn btn-primary fa fa-pencil' onclick='buscarPorIDUsuario(" + response[i].id + ")'></button><button style='margin-left:10px' class='btn btn-danger fa fa-remove' onclick='jqueryDEL(" + response[i].id + ")'></button></td>";
+        rows += "<td> <button class='btn btn-primary fa fa-edit ' style='height: 30px; width: 40px;' onclick='buscarPorIDUsuario(" + response[i].id + ")'></button><button style='margin-left:10px; height: 30px; width: 40px;' class='btn btn-danger fa fa-trash' onclick='jqueryDEL(" + response[i].id + ")'></button></td>";
         rows += '</tr>';
     }
 

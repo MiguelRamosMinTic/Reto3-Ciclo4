@@ -66,7 +66,7 @@ function mostrarTablaInventario(response) {
         rows += '<td>' + response[i].price + '</td>';
         rows += '<td>' + response[i].quantity + '</td>';
         rows += '<td>' + response[i].photography + '</td>';
-        rows += '<td> <button class="btn btn-primary fa fa-pencil" onclick="buscarPorIDInventario(' + response[i].id + ')"></button><button style="margin-left:10px"class="btn btn-danger fa fa-trash" onclick="eliminarInventario(' + response[i].id + ')"></button></td>';
+        rows += '<td> <button class="btn btn-primary fa fa-edit" style="height: 30px; width: 40px;" onclick="buscarPorIDInventario(' + response[i].id + ')"></button><button style="margin-left:10px; height: 30px; width: 40px;" class="btn btn-danger fa fa-trash" onclick="eliminarInventario(' + response[i].id + ')"></button></td>';
         rows += '</tr>';
     }
 
