@@ -85,25 +85,37 @@ function consultarOrder(){
 function mensajePedido(response){
     $("#enviarOrder").empty();
     let mensaje = $("<p>");
-    for(i=0; i<response.length; i++){
-        if(response.length != 1){
-            var idAutoincrementable = response.length+1;
-            mensaje.text("El codigo de tu pedido es "+idAutoincrementable);
-            $("#enviarOrder").append(mensaje);
+    console.log(response.length);
+    for(i=0; i<=response.length; i++){
+        if(response.length == 0){
+            let confirmar = confirm("¿Estas seguro de enviar la orden?");
+            if(confirmar){
+                var idAutoincrementable = 1;
+                mensaje.text("Orden guardada correctamente: El codigo de tu pedido es " + idAutoincrementable);
+                $("#enviarOrder").append(mensaje);
+                guardarOrder(idAutoincrementable);
+            }
         }else{
-            idAutoincrementable = 1;
-            mensaje.text("El codigo de tu pedido es "+idAutoincrementable);
-            $("#enviarOrder").append(mensaje);
+            confirmar = confirm("¿Estas seguro de enviar la orden?");
+            if(confirmar){
+                idAutoincrementable = response.length + 1;
+                mensaje.text("Orden guardada correctamente: El codigo de tu pedido es " + idAutoincrementable);
+                $("#enviarOrder").append(mensaje);
+                guardarOrder(idAutoincrementable, null);
+                break;
+            }
+            break;
         }
     }
 }
 
-function guardarOrder(idAutoincrementable, fechaActual){
+function guardarOrder(idAutoincrementable){
     var id = localStorage.getItem("idUser");
     let datos = {
         id: idAutoincrementable,
         registerDay: new Date(),
         status: "Pendiente"
+        // salesMan: Usuario
     }
     var dataToSend = JSON.stringify(datos);
     $.ajax({
@@ -114,8 +126,10 @@ function guardarOrder(idAutoincrementable, fechaActual){
         type: 'POST',
         success: function(response){
             console.log(response);
-            alert("Order Guardada Correctamente!");
-            $("#ventanaRegistrarOrder").modal("hide");
+            $("#ventanaSolicitarOrder").modal("show");
+        },
+        error: function(){
+            alert("Fallo la conexion con la Base de datos");
         }
     });
 }
@@ -126,10 +140,7 @@ $("#cerrarSesion").click(function(){
 });
 
 
-window.onload = consultarUsuarioPerfil();
-window.onload = consultarProductos();
-
-
-
-// Botón solicitar pedido -------------------------------------------------------
-
+$(document).ready(function(){
+    consultarUsuarioPerfil();
+    consultarProductos();
+});

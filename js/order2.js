@@ -40,15 +40,23 @@ function mostrarTablaPerfil(response) {
 }
 
 function consultarOrdenesZona(){
+    let datos = {
+        zona: $("#zonaId").val()
+    }
     $.ajax({
-        url: "http://localhost:8080/api/order/zona/ZONA 1",
+        url: "http://localhost:8080/api/order/zona/"+datos.zona,
         type: "GET",
         datatype: "JSON",
         success: function (response) {
-            $("#miTablaAsesor").empty();
-            mostrarTablaAsesor(response);
-            console.log(response);
-            $("#tablaAsesor").show();
+            if(response.length == 0){
+                alert("Zona no encontrada, intente nuevamente");
+                $("#tablaAsesor").hide();
+            }else{
+                $("#miTablaAsesor").empty();
+                mostrarTablaAsesor(response);
+                console.log(response);
+                $("#tablaAsesor").show();
+            }
         }
     });
 }
@@ -93,17 +101,24 @@ function mostrarTablaPedido(response) {
         rows += '<td>' + "<button class='btn btn-success' onclick='actualizarPedido("+response.id+")'>Guardar Estado</button>";
         rows += '</tr>';
     $("#miTablaPedido").append(rows);
+    //aisla los productos del json original
+    let productos=response.products;
+    //obtine el coteo de los productos
+    let catProducto = Object.keys(productos);
 
-    let rows2 = '<tr>';
-        rows2 += '<td>' + "<img src='"+response.products.photography+ "' width='50px' height='50px'>";
+    for(let i=0;i<catProducto.length;i++){
+        let rows2 = '<tr>';
+        rows2 += '<td>' + "<img src='"+productos[i+1].photography+ "' width='50px' height='50px'>";
         rows2 += '<th>' + response.id + '</td>';
-        rows2 += '<th>' + response.products[1].os + '</th>';
-        rows2 += '<th>' + response.products[1].description + '</th>';
-        rows2 += '<th>' + response.products[2].price + '</th>';
-        rows2 += '<th>' + response.quantities[1] + '</th>';
-        rows2 += '<th>' + response.products[1].quantity + '</th>';
+        rows2 += '<th>' + productos[i+1].os + '</th>';
+        rows2 += '<th>' + productos[i+1].description + '</th>';
+        rows2 += '<th>' + productos[i+1].price + '</th>';
+        rows2 += '<th>' + response.quantities[i+1] + '</th>';
+        rows2 += '<th>' + productos[i+1].quantity + '</th>';
         rows2 += '</tr>';
     $("#miTablaPedido2").append(rows2);
+
+    }
 }
 
 function actualizarPedido(idPedido){
@@ -133,7 +148,7 @@ $("#cerrarSesion").click(function(){
 });
 
 $(document).ready(function(){
-    consultarOrdenesZona();
     consultarUsuarioPerfil();
+    $("#tablaAsesor").hide();
     $("#tablaPedido").hide();
 });
