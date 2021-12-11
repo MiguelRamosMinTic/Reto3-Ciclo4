@@ -30,5 +30,4 @@ public class Order {
 
     private Map<Integer, Clone> products;
     private Map<Integer, Integer> quantities;
-
 }
