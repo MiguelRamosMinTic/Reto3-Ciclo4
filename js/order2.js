@@ -49,7 +49,7 @@ function consultarOrdenesZona(){
         datatype: "JSON",
         success: function (response) {
             if(response.length == 0){
-                alert("Zona no encontrada, intente nuevamente");
+                alert("Zona no encontrada o sin registros, intente nuevamente");
                 $("#tablaAsesor").hide();
             }else{
                 $("#miTablaAsesor").empty();
@@ -76,6 +76,12 @@ function mostrarTablaAsesor(response) {
     $("#miTablaAsesor").append(rows);
 }
 
+function regresar() {
+    $("#regresar").hide();
+    $("#tablaPedido").hide();
+    $("#tablaAsesor").show();
+}
+
 function verPedido(id){
     $.ajax({
         url: "http://localhost:8080/api/order/"+id,
@@ -87,6 +93,7 @@ function verPedido(id){
             $("#miTablaPedido2").empty();
             $("#tablaAsesor").hide();
             $("#tablaPedido").show();
+            $("#regresar").show();
             mostrarTablaPedido(response);
         }
     });
@@ -138,6 +145,7 @@ function actualizarPedido(idPedido){
             alert("Estado Guardado Correctamente :D");
             consultarOrdenesZona();
             $("#tablaPedido").hide();
+            $("#regresar").hide();
         }
     });
 }
@@ -151,4 +159,5 @@ $(document).ready(function(){
     consultarUsuarioPerfil();
     $("#tablaAsesor").hide();
     $("#tablaPedido").hide();
+    $("#regresar").hide();
 });
