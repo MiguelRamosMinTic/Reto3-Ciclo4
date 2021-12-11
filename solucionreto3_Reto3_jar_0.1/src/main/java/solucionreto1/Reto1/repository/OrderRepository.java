@@ -1,5 +1,6 @@
 package solucionreto1.Reto1.repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +54,15 @@ public class OrderRepository {
     }
     
     public List<Order> getOrderByQuantities(String quantities){
-        return repository.findByStatus(quantities);
+        return repository.findByQuantities(quantities);
+    }
+    
+    public List<Order> getOrderBySalesMan(Integer id){
+        return repository.findBySalesMan_Id(id);
+    }
+    
+    public List<Order> getOrderRegister(Date registerDay, Integer id){
+        return repository.findByRegisterDayAndSalesMan_Id(registerDay, id);
     }
 
 }

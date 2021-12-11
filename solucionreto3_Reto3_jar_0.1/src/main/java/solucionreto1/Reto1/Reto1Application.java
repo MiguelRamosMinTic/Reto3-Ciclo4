@@ -5,6 +5,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import solucionreto1.Reto1.repository.crud.CloneCrudRepository;
+import solucionreto1.Reto1.repository.crud.OrderCrudRepository;
 import solucionreto1.Reto1.repository.crud.UserCrudRepository;
 
 @SpringBootApplication
@@ -15,6 +16,9 @@ public class Reto1Application implements CommandLineRunner {
 
     @Autowired
     private UserCrudRepository userRepository;
+    
+    @Autowired
+    private OrderCrudRepository orderRepository;
 
     public static void main(String[] args) {
         SpringApplication.run(Reto1Application.class, args);
@@ -25,6 +29,8 @@ public class Reto1Application implements CommandLineRunner {
         userRepository.deleteAll();
 
         cloneRepository.deleteAll();
+        
+        orderRepository.deleteAll();
 
     }
 

@@ -1,5 +1,6 @@
 package solucionreto1.Reto1.web;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,4 +91,15 @@ public class OrderController {
     public List<Order> getOrdersByQuantity(@PathVariable("quantity") String quantity){
         return service.getOrdersByQuantities(quantity);
     }
+    
+    @GetMapping("/salesman/{id}")
+    public List<Order> getOrdersBySalesManId(@PathVariable("id") Integer id){
+        return service.getOrdersBySalesManId(id);
+    }
+    
+    @GetMapping("/order/{registerDay}/{id}")
+    public List<Order> getOrdersByRegisterDayAndSalesManId(@PathVariable("registerDay") Date registerDay, @PathVariable("id") Integer id){
+        return service.getRegisterDay(registerDay, id);
+    }
+
 }

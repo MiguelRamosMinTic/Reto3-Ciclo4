@@ -1,5 +1,6 @@
 package solucionreto1.Reto1.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,6 +93,14 @@ public class OrderService {
     
     public List<Order> getOrdersByQuantities(String quantities){
         return repository.getOrderByZone(quantities);
+    }
+    
+    public List<Order> getOrdersBySalesManId(Integer id){
+        return repository.getOrderBySalesMan(id);
+    }
+    
+    public List<Order> getRegisterDay(Date registerDay, Integer id){
+        return repository.getOrderRegister(registerDay, id);
     }
     
 }
